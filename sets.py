@@ -67,7 +67,7 @@ def generate_set_html():
 		# 		exception_flag = True
 
 		if exception_flag == False:
-			test1 = dpd_df["Category"].str.contains(f"{set_name}")
+			test1 = dpd_df["Category"].str.contains(f"(^|; ){set_name}($|; )")
 			test2 =  dpd_df["Meaning IN CONTEXT"] != ""
 			filter = test1 & test2
 			set_df = dpd_df.loc[filter, ["Pāli1", "POS", "Meaning IN CONTEXT"]]
@@ -102,46 +102,3 @@ generate_set_html()
 delete_unused_files()
 
 print(f"{timeis()} {line}")
-
-# print(f"{timeis()} {green}generating synonyms stop set")
-    
-    # stop_set1 = {"a", "and", "of", "or", "the", "from", "not", "to", "no", "be", "has", "who", "with", "as", "for", "by", "they", "he", "she", "it", "in", "on", "is", "was", "out", "did", "gram", "comm", "something", "one's", "a", "an", "at", "you", "about", "against", "all", "being", "having", "etc.", "fact", "which", "could", "would", "can", "one", "", "way", "I", "me", "will", "towards"}
-
-    # # generating list of pali words in english meaning
-    
-    # pali_word_string = ""
-    # english_word_string = ""
-    # for row in range(df_length):
-    #     w = DpdWord(df, row)
-    #     pali_word_string += w.pali_clean + " "
-    #     meaning = w.meaning.lower()
-    #     meaning_clean = re.sub("[^A-Za-zāīūṭḍḷñṅṇṃ1234567890\-'’ ]", "", meaning)
-    #     english_word_string += meaning_clean + " "
-
-    # pali_word_set = set(pali_word_string.split(" "))
-    # english_word_set = set(english_word_string.split(" "))
-    # stop_set2 = pali_word_set & english_word_set
-    # stop_set2 = set(sorted(stop_set2))
-    # stop_set2.remove("")
-
-    # print(f"{timeis()} {green}generating json")
-
-    # with open(rsc['epd_css_path'], 'r') as f:
-    #     epd_css = f.read()
-    
-    # epd_data_list = []
-
-    # for key, value in epd.items():
-    #     html_string = ""
-        # synonyms = key
-        # synonyms = re.sub("-", " ", synonyms)
-        # synonyms = re.sub("[^A-Za-zāīūṭḍḷñṅṇṃ1234567890\-'’ ]", "", synonyms)
-        # synonyms = synonyms.lower()
-        # synonyms_set = set(synonyms.split(" "))
-        # synonyms_set = synonyms_set - stop_set1
-        # synonyms_set = synonyms_set - stop_set2
-
-        # html_string = epd_css
-        # html_string += f"<body><div class ='epd'><p>{value}</p></div></body></html>"
-
-        # epd_data_list += [[f"{key}", f"""{html_string}""", "", ""]] #synonyms_set
