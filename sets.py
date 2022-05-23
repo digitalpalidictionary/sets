@@ -71,7 +71,7 @@ def generate_set_html():
 			test2 =  dpd_df["Meaning IN CONTEXT"] != ""
 			filter = test1 & test2
 			set_df = dpd_df.loc[filter, ["Pāli1", "POS", "Meaning IN CONTEXT"]]
-			set_df = set_df.sort_values(by=["Meaning IN CONTEXT", "Pāli1"])
+			set_df = set_df.sort_values(by=["Pāli1", "Meaning IN CONTEXT"])
 			set_df = set_df.set_index("Pāli1")
 			set_df.index.name = None
 			set_html = set_df.to_html(escape=False, header = None, index = True)
