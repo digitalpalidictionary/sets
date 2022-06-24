@@ -6,7 +6,7 @@ import re
 import pandas as pd
 import warnings
 from datetime import date
-from timeis import timeis, yellow, red, green, line
+from timeis import timeis, yellow, red, green, line, tic, toc
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
@@ -96,9 +96,9 @@ def delete_unused_files():
 			except:
 				print(f"{timeis()} {red}{file} not found")
 
+tic()
 setup_dpd_df()
 extract_list_of_set_name()
 generate_set_html()
 delete_unused_files()
-
-print(f"{timeis()} {line}")
+toc()
