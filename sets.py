@@ -37,8 +37,12 @@ def extract_list_of_set_name():
 		if set_cell != "":
 			set_names_string += set_cell + "; "
 
+	exceptions = ["dps", "ncped", "pass1", "sandhi"]
+
 	set_names_list = list(set(set_names_string.split("; ")))
 	set_names_list.remove('')
+	for exception in exceptions:
+		set_names_list.remove(exception)
 	set_names_list.sort()
 
 	with open("output/set_names_list.txt", "w") as f:
@@ -52,7 +56,6 @@ def generate_set_html():
 	dpd_df.loc[dpd_df["Meaning IN CONTEXT"] == "", "Meaning IN CONTEXT"] = dpd_df["Buddhadatta"] + "*"
 	dpd_df.loc[dpd_df["Literal Meaning"] != "", "Meaning IN CONTEXT"] += "; lit. " + dpd_df["Literal Meaning"]
 	
-	# exceptions = ["books", "chapters", "suttas", "vaggas", "dps", "ncped"]
 	set_name_length = len(set_names_list)
 	counter = 0
 
@@ -62,9 +65,6 @@ def generate_set_html():
 			print(f"{timeis()} {counter}/{set_name_length}\t{set_name}")
 
 		exception_flag = False
-		# for exception in exceptions:
-		# 	if re.findall(exception, set_name):
-		# 		exception_flag = True
 
 		if exception_flag == False:
 			test1 = dpd_df["Category"].str.contains(f"(^|; ){set_name}($|; )")
