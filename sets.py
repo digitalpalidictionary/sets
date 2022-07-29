@@ -72,13 +72,27 @@ def generate_set_html():
 			filter = test1 & test2
 			set_df = dpd_df.loc[filter, ["Pāli1", "POS", "Meaning IN CONTEXT"]]
 			set_df = set_df.sort_values(by=["Pāli1", "Meaning IN CONTEXT"])
-			set_df = set_df.set_index("Pāli1")
-			set_df.index.name = None
-			set_html = set_df.to_html(escape=False, header = None, index = True)
-			set_html = re.sub ('table border="1" class="dataframe"', 'table class="table1"', set_html)
 
-			with open(f"output/html/{set_name}.html", "w") as f:
-				f.write(set_html)
+			# set_df = set_df.set_index("Pāli1")
+			# set_df.index.name = None
+			# set_html = set_df.to_html(escape=False, header = None, index = True)
+			# set_html = re.sub ('table border="1" class="dataframe"', 'table class="table1"', set_html)
+
+			if set_df.shape[0] > 0:
+				html = """<p class ="family">"""
+				length = set_df.shape[0]
+
+				for row in range(length):
+					pali = set_df.iloc[row, 0]
+					pos = set_df.iloc[row, 1]
+					meaning = set_df.iloc[row, 2]
+
+					html += f"""<b>{pali}</b>&ensp;<b2>{pos}</b2>&ensp;{meaning}<br>"""
+					
+				html += """</p>"""
+
+				with open(f"output/html/{set_name}.html", "w") as f:
+					f.write(html)
 		
 		counter += 1
 	
