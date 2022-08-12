@@ -7,6 +7,7 @@ import pandas as pd
 import warnings
 from datetime import date
 from timeis import timeis, yellow, red, green, line, tic, toc
+from sorter import sort_key
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
@@ -59,6 +60,9 @@ def generate_set_html():
 	set_name_length = len(set_names_list)
 	counter = 0
 
+	with open("../exporter/assets/dpd-words.css", "r") as c:
+		css = c.read()
+
 	for set_name in set_names_list:
 
 		if counter % 25 == 0:
@@ -72,14 +76,18 @@ def generate_set_html():
 			filter = test1 & test2
 			set_df = dpd_df.loc[filter, ["Pāli1", "POS", "Meaning IN CONTEXT"]]
 			set_df = set_df.sort_values(by=["Pāli1", "Meaning IN CONTEXT"])
+			set_df.sort_values(by=["Pāli1"], inplace=True, ignore_index=True, key=lambda x: x.map(sort_key))
 
 			# set_df = set_df.set_index("Pāli1")
 			# set_df.index.name = None
 			# set_html = set_df.to_html(escape=False, header = None, index = True)
 			# set_html = re.sub ('table border="1" class="dataframe"', 'table class="table1"', set_html)
 
+			# print(set_df)
+
 			if set_df.shape[0] > 0:
-				html = """<p class ="family">"""
+				set_html = f"""<style>{css}</style><table class = "table1">"""
+				set_html = f"""<table class = "table1">"""
 				length = set_df.shape[0]
 
 				for row in range(length):
@@ -87,12 +95,12 @@ def generate_set_html():
 					pos = set_df.iloc[row, 1]
 					meaning = set_df.iloc[row, 2]
 
-					html += f"""<b>{pali}</b>&ensp;<b2>{pos}</b2>&ensp;{meaning}<br>"""
+					set_html += f"""<tr><th class="cfpali">{pali}</th><td class="cfpos">{pos}</td><td class="cfeng">{meaning}</td></tr>"""
 					
-				html += """</p>"""
+				set_html += """</table>"""
 
-				with open(f"output/html/{set_name}.html", "w") as f:
-					f.write(html)
+			with open(f"output/html/{set_name}.html", "w") as f:
+				f.write(set_html)
 		
 		counter += 1
 	
