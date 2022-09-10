@@ -8,6 +8,7 @@ import warnings
 from datetime import date
 from timeis import timeis, yellow, red, green, line, tic, toc
 from sorter import sort_key
+from delete_unused_files import del_unused_files
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 warnings.simplefilter(action='ignore', category=UserWarning)
@@ -54,7 +55,7 @@ def generate_set_html():
 	global exceptions
 	print(f"{timeis()} {green}generating sets html")
 
-	dpd_df.loc[dpd_df["Meaning IN CONTEXT"] == "", "Meaning IN CONTEXT"] = dpd_df["Buddhadatta"] + "*"
+	dpd_df.loc[dpd_df["Meaning IN CONTEXT"] == "", "Meaning IN CONTEXT"] = dpd_df["Buddhadatta"] #+ "*"
 	dpd_df.loc[dpd_df["Literal Meaning"] != "", "Meaning IN CONTEXT"] += "; lit. " + dpd_df["Literal Meaning"]
 	
 	set_name_length = len(set_names_list)
@@ -106,17 +107,12 @@ def generate_set_html():
 	
 
 def delete_unused_files():
-	print(f"{timeis()} {green}deleting unused files")
 	
-	for root, dirs, files in os.walk("output/html/", topdown=True):
-		for file in files:
-			try:
-				file_clean = re.sub(".html", "", file)
-				if file_clean not in set_names_list:
-					os.remove(f"output/html/{file_clean}.html")
-					print(f"{timeis()} {file}")
-			except:
-				print(f"{timeis()} {red}{file} not found")
+	file_dir = "output/html/"
+	file_ext = ".html"
+	del_unused_files(set_names_list, file_dir, file_ext)
+
+
 
 tic()
 setup_dpd_df()
