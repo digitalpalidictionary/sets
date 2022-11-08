@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-import os
-import re
 import pandas as pd
 import warnings
+import json
+import re
+
 from datetime import date
 from timeis import timeis, yellow, red, green, line, tic, toc
 from sorter import sort_key
@@ -60,6 +61,7 @@ def generate_set_html():
 	
 	set_name_length = len(set_names_list)
 	counter = 0
+	set_dict = {}
 
 	with open("../exporter/assets/dpd-words.css", "r") as c:
 		css = c.read()
@@ -96,14 +98,22 @@ def generate_set_html():
 					pos = set_df.iloc[row, 1]
 					meaning = set_df.iloc[row, 2]
 
-					set_html += f"""<tr><th class="cfpali">{pali}</th><td class="cfpos">{pos}</td><td class="cfeng">{meaning}</td></tr>"""
-					
+					# set_html += f"""<tr><th class="cfpali">{pali}</th><td class="cfpos">{pos}</td><td class="cfeng">{meaning}</td></tr>"""
+					set_html += f"""<tr><th>{pali}</th><td>{pos}</td><td>{meaning}</td></tr>"""
+
 				set_html += """</table>"""
+			
+			html_for_json = re.sub("table1", "sets", set_html)
+			set_dict[set_name] = html_for_json
 
 			with open(f"output/html/{set_name}.html", "w") as f:
 				f.write(set_html)
-		
+
 		counter += 1
+	
+	set_json = json.dumps(set_dict, ensure_ascii=False, indent=4)
+	with  open ("../dpd-app/data/sets.json", "w") as f:
+		f.write(set_json)
 	
 
 def delete_unused_files():
