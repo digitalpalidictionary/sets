@@ -99,7 +99,7 @@ def generate_set_html():
 					meaning = set_df.iloc[row, 2]
 
 					# set_html += f"""<tr><th class="cfpali">{pali}</th><td class="cfpos">{pos}</td><td class="cfeng">{meaning}</td></tr>"""
-					set_html += f"""<tr><th>{pali}</th><td>{pos}</td><td>{meaning}</td></tr>"""
+					set_html += f"""<tr><th>{pali}</th><td><b>{pos}</b></td><td>{meaning}</td></tr>"""
 
 				set_html += """</table>"""
 			
